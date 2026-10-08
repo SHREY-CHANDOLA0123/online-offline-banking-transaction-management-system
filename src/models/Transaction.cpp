@@ -1,12 +1,7 @@
 #include "Transaction.h"
 using namespace std;
-Transaction::Transaction(const string& transactionId,
-                         const string& senderAccountId,
-                         const string& receiverAccountId,
-                         long long amount,
-                         const string& createdAt)
-{
-    this->transactionId = transactionId;
+Transaction::Transaction(const string &transactionId, const string &senderAccountId, const string &receiverAccountId, long long amount, const string &createdAt)
+{   this->transactionId = transactionId;
     this->senderAccountId = senderAccountId;
     this->receiverAccountId = receiverAccountId;
     this->amount = amount;
@@ -15,38 +10,31 @@ Transaction::Transaction(const string& transactionId,
 }
 
 string Transaction::getTransactionId() const
-{
-    return transactionId;
+{   return transactionId;
 }
 
 string Transaction::getSenderAccountId() const
-{
-    return senderAccountId;
+{   return senderAccountId;
 }
 
 string Transaction::getReceiverAccountId() const
-{
-    return receiverAccountId;
-}
+{   return receiverAccountId;
+}      
 
 long long Transaction::getAmount() const
-{
-    return amount;
+{   return amount;
 }
 
 TransactionStatus Transaction::getStatus() const
-{
-    return status;
+{   return status;
 }
 
 string Transaction::getCreatedAt() const
-{
-    return createdAt;
+{   return createdAt;
 }
 
 bool Transaction::canTransitionTo(TransactionStatus newStatus) const
-{
-    switch (status)
+{   switch (status)
     {
         case TransactionStatus::PENDING:
             return newStatus == TransactionStatus::SUCCESSFUL ||
@@ -70,12 +58,9 @@ bool Transaction::canTransitionTo(TransactionStatus newStatus) const
 }
 
 bool Transaction::updateStatus(TransactionStatus newStatus)
-{
-    if (!canTransitionTo(newStatus))
-    {
-        return false;
-    }
-
+{   if(!(canTransitionTo(newStatus)))
+        {return false;
+        }
     status = newStatus;
     return true;
 }
