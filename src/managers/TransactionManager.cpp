@@ -19,6 +19,7 @@ bool TransactionManager::addTransaction(
 int TransactionManager::findTransactionIndexById(
     const std::string& transactionId) const
 {
+    // Searching for a transaction
     for (std::size_t i = 0; i < transactions.size(); i++)
     {
         if (transactions[i].getTransactionId() == transactionId)
