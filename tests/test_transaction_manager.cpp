@@ -55,23 +55,28 @@ int main()
         std::cout << "Duplicate transaction ID rejected\n";
     }
 
-    // Test searching
+    // Test transactionExists()
+    if (manager.transactionExists("TXN1001"))
+    {
+        std::cout << "TXN1001 exists in the recorded IDs\n";
+    }
+
+    if (!manager.transactionExists("TXN9999"))
+    {
+        std::cout << "TXN9999 is not recorded\n";
+    }
+
+    // Test searching the transaction history
     int index = manager.findTransactionIndexById("TXN1002");
 
     if (index != -1)
     {
-        std::cout << "\nTXN1002 found at index: "
+        std::cout << "TXN1002 found at index: "
                   << index << '\n';
     }
     else
     {
-        std::cout << "\nTransaction not found\n";
-    }
-
-    // Test searching for a missing ID
-    if (manager.findTransactionIndexById("TXN9999") == -1)
-    {
-        std::cout << "Missing transaction correctly reported\n";
+        std::cout << "Transaction not found\n";
     }
 
     // Display transaction history
