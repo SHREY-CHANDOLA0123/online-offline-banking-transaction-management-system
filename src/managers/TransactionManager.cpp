@@ -3,15 +3,20 @@
 bool TransactionManager::addTransaction(
     const Transaction& transaction)
 {
+    const std::string& transactionId =
+        transaction.getTransactionId();
+
     // Reject duplicate transaction IDs
-    if (findTransactionIndexById(
-            transaction.getTransactionId()) != -1)
+    if (transactionExists(transactionId))
     {
         return false;
     }
 
-    // Add the transaction to the vector
+    // Add the transaction record
     transactions.push_back(transaction);
+
+    // Record the ID for future duplicate checks
+    transactionIds.insert(transactionId);
 
     return true;
 }
@@ -19,7 +24,6 @@ bool TransactionManager::addTransaction(
 int TransactionManager::findTransactionIndexById(
     const std::string& transactionId) const
 {
-    // Searching for a transaction
     for (std::size_t i = 0; i < transactions.size(); i++)
     {
         if (transactions[i].getTransactionId() == transactionId)
@@ -45,4 +49,10 @@ std::size_t TransactionManager::getTransactionCount() const
 bool TransactionManager::isEmpty() const
 {
     return transactions.empty();
+}
+
+bool TransactionManager::transactionExists(
+    const std::string& transactionId) const
+{
+    return transactionIds.find(transactionId) != transactionIds.end();
 }
