@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_set>
 
 #include "../../src/models/Transaction.h"
 
@@ -10,6 +11,7 @@ class TransactionManager
 {
 private:
     std::vector<Transaction> transactions;
+    std::unordered_set<std::string> transactionIds;
 
 public:
     // Add a transaction to the collection
@@ -28,6 +30,9 @@ public:
 
     // Check whether the history is empty
     bool isEmpty() const;
+
+    // Check whether a transaction ID has been recorded
+    bool transactionExists(const std::string& transactionId) const;
 };
 
 #endif
