@@ -4,27 +4,22 @@ bool AccountManager::addAccount(const Account& account)
 {
     // Reject duplicate account IDs
     if (accountExists(account.getAccountId()))
-    {
-        return false;
+    { return false;
     }
 
     // Insert the account using its ID as the key
     accounts.emplace(account.getAccountId(), account);
-
     return true;
 }
 
 Account* AccountManager::findAccountById(
     const std::string& accountId)
-{
-    auto it = accounts.find(accountId);
-
-    if (it == accounts.end())
+{auto it = accounts.find(accountId);
+if (it == accounts.end())
     {
         return nullptr;
     }
-
-    return &(it->second);
+return &(it->second);
 }
 
 const Account* AccountManager::findAccountById(
