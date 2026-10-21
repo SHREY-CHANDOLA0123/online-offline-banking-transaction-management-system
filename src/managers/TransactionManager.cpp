@@ -54,5 +54,12 @@ bool TransactionManager::isEmpty() const
 bool TransactionManager::transactionExists(
     const std::string& transactionId) const
 {
-    return transactionIds.find(transactionId) != transactionIds.end();
+    auto it = transactionIds.find(transactionId);
+
+    if (it != transactionIds.end())
+    {
+        return true;
+    }
+
+    return false;
 }
