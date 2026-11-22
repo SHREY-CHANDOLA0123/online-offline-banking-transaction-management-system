@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OOBTMS Control Room</title>
+<style>
+:root{--bg:#eceff3;--ink:#0f1f33;--card:#fff;--line:#d5dce5;--mut:#5d6f84;--ok:#0b8f6a;--warn:#d9730d;--bad:#c93a22;--acc:#1d4ed8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Avenir Next","Segoe UI Variable","Segoe UI",system-ui,sans-serif;padding:18px}
+header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px}h1{margin:0;font-size:26px;letter-spacing:-.5px}
+.mut{color:var(--mut);font-size:13px}.grid{display:grid;gap:14px;margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.c{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--line)}.c h2{margin:0 0 10px;font-size:15px}.wide{grid-column:1/-1}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}.t{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.t b{display:block;font-size:30px;letter-spacing:-1px}.t.q b{color:var(--warn)}
+.dev{display:flex;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--ok);box-shadow:0 0 0 4px #0b8f6a33;animation:pl 1.6s infinite}.dot.off{background:var(--warn);box-shadow:none;animation:none}@keyframes pl{50%{box-shadow:0 0 0 7px #0b8f6a00}}
+.tok{display:inline-block;font:600 12px ui-monospace,Menlo,Consolas,monospace;background:#fdebd3;color:#8a4a06;border-radius:6px;padding:2px 7px;margin:4px 4px 0 0}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:8px 6px;border-top:1px solid var(--line)}th{font-size:12px;color:var(--mut);border:0}
+tr.new{animation:fl 2.2s}@keyframes fl{0%{background:#fff3b0}100%{background:transparent}}
+.b{font-size:12px;font-weight:700;border-radius:99px;padding:2px 9px;color:#fff}.ONLINE{background:var(--acc)}.OFFLINE{background:var(--warn)}.SUCCESSFUL{color:var(--ok)}.FAILED{color:var(--bad)}
+.log{font:13px/1.7 ui-monospace,Menlo,Consolas,monospace;max-height:300px;overflow:auto}.log div:first-child{font-weight:700}
+.bar{height:7px;border-radius:4px;background:var(--acc);margin:4px 0 10px;transition:width .6s}.bar.n{background:var(--bad)}
+select,input,button{font:inherit;padding:9px;border-radius:9px;border:1px solid var(--line);width:100%;margin-top:6px;background:#fff;color:var(--ink)}button{background:var(--ink);color:#fff;font-weight:700;border:0;cursor:pointer}
+#err{display:none;background:var(--bad);color:#fff;padding:8px 12px;border-radius:10px;margin-top:10px}
+</style></head><body>
+<header><div><h1>Bank server · control room</h1><div class="mut">Monitoring only: every payment, device, queue and rupee the bank can see, live</div></div><div class="mut" id="clock"></div></header>
+<div id="err">Cannot reach the server. Is server.exe still running?</div>
+<div class="tiles" id="tiles"></div>
+<div class="grid">
+<div class="c"><h2>Connected devices and queues</h2><div id="devs"></div></div>
+<div class="c"><h2>Live event feed</h2><div class="log" id="log"></div></div>
+<div class="c wide"><h2>Transaction ledger</h2><div style="overflow-x:auto"><table><thead><tr><th>Time</th><th>ID</th><th>From</th><th>To</th><th>Amount</th><th>Channel</th><th>Result</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+<div class="c"><h2>Account balances</h2><div id="accs"></div></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),inr=p=>(p<0?'−':'')+'₹'+(Math.abs(p)/100).toLocaleString('en-IN',{maximumFractionDigits:2}),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let seen=null,D=null;
+async function poll(){try{const r=await fetch('/api/admin',{cache:'no-store'});D=await r.json();$('err').style.display='none';draw()}catch(e){$('err').style.display='block'}$('clock').textContent=new Date().toLocaleTimeString()}
+function draw(){const A=D.state.accounts,nm=i=>A[i]?A[i].name:i,T=D.state.transactions,ids=Object.keys(A);
+  const ok=T.filter(t=>t.status==='SUCCESSFUL'),vol=ok.reduce((a,t)=>a+t.amount,0),qn=D.devices.reduce((a,d)=>a+d.q,0),qa=D.devices.reduce((a,d)=>a+d.qa,0),on=D.devices.filter(d=>d.ago<=3).length;
+  $('tiles').innerHTML=[['Total money in bank',inr(ids.reduce((a,i)=>a+A[i].balance,0)),''],['Customer site connected',on+' / '+D.devices.length,''],['Transactions',T.length,''],['Settled',ok.length,''],['Failed',T.length-ok.length,''],['Money moved',inr(vol),''],['Settled offline',ok.filter(t=>t.mode==='OFFLINE').length,''],['In device queues',qn+(qn?' · '+inr(qa):''),'q']].map(x=>`<div class="t ${x[2]}"><span class="mut">${x[0]}</span><b>${x[1]}</b></div>`).join('');
+  $('devs').innerHTML=D.devices.length?D.devices.map(d=>{const up=d.ago<=3,tk=d.tok?d.tok.split('_').map(x=>`<span class="tok">${esc(x)}</span>`).join(''):'';
+    return`<div class="dev"><div><b>${esc(d.id)}</b> · ${d.acc==='ALL'?'Customer site (A, B, C) · port 8001':esc(nm(d.acc))}<br><span class="mut"><i class="dot ${up?'':'off'}"></i>${up?'Online':'Offline · last seen '+d.ago+'s ago'}</span></div><div style="text-align:right">${d.q?`<b style="color:var(--warn)">${d.q} queued · ${inr(d.qa)}</b><br>${tk}<br><span class="mut">${up?'about to settle':'waiting on the device, settles when it reconnects'}</span>`:'<span class="mut">Queue empty</span>'}</div></div>`}).join(''):'<div class="mut">The customer site has not connected yet. Start customer_site and open http://localhost:8001.</div>';
+  $('log').innerHTML=D.events.slice().reverse().map(e=>`<div>${esc(e)}</div>`).join('')||'<div class="mut">Waiting for activity.</div>';
+  const first=seen===null;$('rows').innerHTML=T.slice().reverse().slice(0,40).map(t=>`<tr class="${!first&&!seen.has(t.id)?'new':''}"><td>${t.settledAt.slice(11)}</td><td>${esc(t.id)}</td><td>${esc(nm(t.from))}</td><td>${esc(nm(t.to))}</td><td><b>${inr(t.amount)}</b></td><td><span class="b ${t.mode}">${t.mode.toLowerCase()}</span></td><td class="${t.status}">${t.status.toLowerCase()}${t.reason?' · '+esc(t.reason):''}</td></tr>`).join('')||'<tr><td colspan="7" class="mut">No transactions yet.</td></tr>';
+  seen=new Set(T.map(t=>t.id));const mx=Math.max(1,...ids.map(i=>Math.abs(A[i].balance)));
+  $('accs').innerHTML=ids.map(i=>`<div style="display:flex;justify-content:space-between"><span>${esc(A[i].name)} <span class="mut">${i}</span></span><b>${inr(A[i].balance)}</b></div><div class="bar ${A[i].balance<0?'n':''}" style="width:${Math.max(2,Math.abs(A[i].balance)/mx*100)}%"></div>`).join('');}
+poll();setInterval(poll,1000);
+</script></body></html>

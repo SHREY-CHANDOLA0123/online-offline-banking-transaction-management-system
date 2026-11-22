@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OOBTMS Bank</title>
+<style>
+:root{--pu:#280071;--bl:#0a9ae0;--bg:#f1f3fa;--ink:#1c1b2e;--card:#fff;--line:#e2e5f1;--mut:#6b6f85;--ok:#0f9d58;--bad:#d93025;--wa:#f29900}
+body.off{--pu:#8a3b00;--bl:#f28c28;--bg:#fff3e4;--line:#f0dcc3}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Segoe UI",Roboto,system-ui,sans-serif;transition:background .6s}
+#app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:84px}button{font:inherit;cursor:pointer;color:inherit}
+.hd{background:var(--pu);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;transition:background .6s}.hd b{flex:1;font-size:18px}.hd small{display:block;font-weight:400;opacity:.75;font-size:11px}
+.hd .bk{background:none;border:0;color:#fff;font-size:22px;padding:0 6px 0 0}
+.pill{background:#ffffff2b;border:0;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;color:#fff}.pill i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3ddc84;margin-right:6px}body.off .pill i{background:#ffd27a}
+.nb{background:var(--pu);color:#ffffffcc;font-size:12px;padding:0 16px 12px;transition:background .6s}
+.pg{padding:14px}h3{margin:16px 2px 8px;font-size:14px;color:var(--mut)}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(40,0,113,.08)}
+.hero{background:var(--bl);color:#fff;border-radius:18px;padding:18px;position:relative;overflow:hidden;margin-bottom:12px;transition:background .6s}
+.hero:after{content:"";position:absolute;right:-44px;top:-44px;width:150px;height:150px;border:24px solid rgba(255,255,255,.2);border-radius:50%}
+.hero small{opacity:.9}.bal{font-size:34px;font-weight:700;letter-spacing:-1px;margin:4px 0;display:flex;align-items:center;gap:10px}.bal button{background:rgba(255,255,255,.25);border:0;border-radius:99px;padding:2px 10px;font-size:13px;color:#fff}
+.meter{height:8px;background:rgba(255,255,255,.3);border-radius:9px;overflow:hidden;margin-top:10px}.meter u{display:block;height:100%;background:#fff;transition:width .5s}
+.ga{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:12px}.ga button{background:none;border:0}.ga span{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 5px;border-radius:18px;background:var(--card);font-size:25px;box-shadow:0 1px 4px rgba(40,0,113,.1)}
+.cu{display:flex;align-items:center;gap:12px;padding:12px;background:var(--card);border:0;border-radius:14px;margin-bottom:8px;width:100%;text-align:left;box-shadow:0 1px 4px rgba(40,0,113,.08)}.cu:active{transform:scale(.98)}
+.cu div:nth-child(2){flex:1}.cu small{color:var(--mut);display:block}.cu em{font-style:normal;color:var(--mut);font-size:22px}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.tx{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.tx:first-child{border-top:0}.tx>div:nth-child(2){flex:1;min-width:0}.tx small{color:var(--mut);display:block;font-size:12px}
+.cr{color:var(--ok)}.dr{color:var(--ink)}.F{color:var(--bad)}.P{color:var(--wa)}
+.tk{border:2px dashed var(--wa);border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}.tk b{font-family:ui-monospace,Menlo,Consolas,monospace}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;display:flex;border-top:1px solid var(--line)}
+.nav button{flex:1;border:0;background:none;padding:8px 0 10px;font-size:11px;color:var(--mut)}.nav .on{color:var(--pu);font-weight:700}.nav span{display:block;font-size:21px}
+.dots{display:flex;gap:16px;justify-content:center;margin:20px}.dots i{width:15px;height:15px;border-radius:50%;border:2px solid var(--pu)}.dots i.f{background:var(--pu)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.k{border:0;background:var(--card);border-radius:14px;font-size:24px;padding:14px;box-shadow:0 1px 3px rgba(40,0,113,.1)}.k:active{transform:scale(.93)}
+.amt{font-size:42px;font-weight:700;text-align:center;margin:6px 0}.q{display:flex;gap:8px;justify-content:center;margin-bottom:10px}.q button{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px}
+.cta{width:100%;border:0;border-radius:14px;padding:15px;margin-top:12px;font-weight:700;font-size:16px;background:var(--pu);color:#fff;transition:background .6s}.cta.g{background:var(--card);color:var(--pu);border:1px solid var(--pu)}
+.tick{width:84px;height:84px;border-radius:50%;color:#fff;font-size:44px;display:grid;place-items:center;margin:14px auto;animation:pop .5s}@keyframes pop{from{transform:scale(0)}}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}.kv:first-child{border-top:0}.kv span:first-child{color:var(--mut)}
+#msg{position:fixed;left:14px;right:14px;bottom:86px;max-width:452px;margin:auto;background:#222;color:#fff;padding:12px 16px;border-radius:12px;transform:translateY(200%);transition:transform .3s;z-index:9;font-size:14px}#msg.show{transform:none}
+</style></head><body><div id="app"></div><div id="msg"></div>
+<script>
+const $=id=>document.getElementById(id),LS=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||'null'):localStorage.setItem(k,JSON.stringify(v));
+let S=LS('cache')||{accounts:{},transactions:[],offlineLimit:500000},queue=[],me=null,view='home',pick=null,to=null,digits='',pin='',rc=null,online=false,busy=false,cut=false,show=false,sig='';
+const inr=p=>(p<0?'−':'')+'₹'+(Math.abs(p)/100).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nm=id=>S.accounts[id]?S.accounts[id].name:id,mask=id=>'XXXX XXXX '+id.slice(3),first=id=>nm(id),ts=()=>new Date().toISOString().slice(0,19).replace('T',' ');
+const av=id=>`<div class="av" style="background:hsl(${parseInt(id.slice(3)||0)*67%360} 52% 40%)">${esc(nm(id).slice(-1)||'?')}</div>`,pending=()=>queue.filter(q=>q.from===me).reduce((a,q)=>a+q.amount,0);
+const line=q=>[q.id,q.from,q.to,q.amount,q.createdAt].join('|'),setS=s=>{S=s;LS('cache',s)},amtP=()=>Math.round(parseFloat(digits||'0')*100);
+function toast(t){const m=$('msg');m.textContent=t;m.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>m.className='',4500)}
+async function api(p,body){const c=new AbortController(),t=setTimeout(()=>c.abort(),2500);try{return await(await fetch(p,{method:body!==undefined?'POST':'GET',body,signal:c.signal})).json()}finally{clearTimeout(t)}}
+let pq=0;
+async function tick(){let r;try{r=await api('/api/state')}catch(e){online=false;return}
+  S=r.state;LS('cache',S);online=r.online;cut=r.cut;queue=r.queue;
+  if(online&&pq>queue.length){const n=pq-queue.length;toast(`Back online: ${n} offline payment${n==1?'':'s'} sent to the bank`)}pq=queue.length;
+  const s=JSON.stringify([S,online,queue.length,me,view]);if(s!==sig){sig=s;draw()}}
+async function login(){try{const r=await api('/api/login',pick+'|'+pin);if(r.ok){me=pick;view='dash';show=false}else toast(r.offline?'Connect to the bank to sign in.':'Wrong PIN. Demo PIN is 1234.')}catch(e){toast('Customer site is not responding.')}pin='';draw()}
+async function pay(){const amount=amtP();if(amount<=0)return toast('Enter an amount first.');
+  const tx={id:(online?'TXN-':'OFF-')+Math.random().toString(36).slice(2,8).toUpperCase(),from:me,to,amount,createdAt:ts()};
+  try{const r=await api('/api/pay',line(tx));if(r.error)return toast(r.error);if(r.state)setS(r.state);rc={tx:r.tx,off:!!r.queued};digits='';view='receipt';draw()}catch(e){toast('Customer site is not responding.')}}
+const hd=(t,back)=>`<div class="hd">${back?`<button class="bk" data-a="go" data-v="${back}">‹</button>`:`<svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#0a9ae0"/><circle cx="15" cy="12" r="5" fill="#fff"/><rect x="13.3" y="14" width="3.4" height="11" rx="1.7" fill="#fff"/></svg>`}<b>${t}<small>OOBTMS Bank · pay with or without internet</small></b><button class="pill" data-a="cable"><i></i>${online?'Online':'Offline'}</button></div><div class="nb">${online?'Connected to the bank server (port 8000). Tap the status to cut the connection.':'No connection. Payments are saved here and settled later, up to ₹'+(S.offlineLimit/100).toLocaleString('en-IN')+'.'}</div>`;
+const nav=()=>`<div class="nav">${[['dash','🏠','Home'],['payee','💸','Send'],['book','📒','Passbook'],['acct','👤','Account']].map(n=>`<button class="${view===n[0]?'on':''}" data-a="go" data-v="${n[0]}"><span>${n[1]}</span>${n[2]}</button>`).join('')}</div>`;
+const txRow=t=>{const out=t.from===me,o=out?t.to:t.from;return`<div class="tx">${av(o)}<div><b>${out?'Paid to':'Received from'} ${esc(nm(o))}</b><small>${t.settledAt.slice(0,16)} · ${t.mode.toLowerCase()} · ${t.id}</small></div><div style="text-align:right"><b class="${t.status==='FAILED'?'F':out?'dr':'cr'}">${t.status==='FAILED'?'':out?'−':'+'}${inr(t.amount)}</b><small class="${t.status[0]==='F'?'F':''}">${t.status.toLowerCase()}${t.reason?' · '+esc(t.reason):''}</small></div></div>`};
+const mine=()=>S.transactions.filter(t=>t.from===me||t.to===me).reverse(),keypad=()=>`<div class="pad">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button class="k" data-a="k" data-v="${k}">${k}</button>`).join('')}</div>`;
+function draw(){document.body.classList.toggle('off',!online);const ids=Object.keys(S.accounts),a=S.accounts[me],bal=a?a.balance-pending():0;let h='';
+  if(view==='home')h=hd('Welcome')+`<div class="pg"><div class="hero"><small>Net Banking</small><div style="font-size:22px;font-weight:700;margin:4px 0">Tap your account to sign in</div><small>Works even when the network drops.</small></div><h3>Customers</h3>`+(ids.length?ids.map(i=>`<button class="cu" data-a="pick" data-v="${i}">${av(i)}<div><b>${esc(nm(i))}</b><small>Savings A/c ${mask(i)}</small></div><em>›</em></button>`).join(''):'<div class="card">Connecting to the bank server…</div>')+'</div>';
+  if(view==='pin')h=hd('Sign in','home')+`<div class="pg" style="text-align:center"><div style="margin-top:10px">${av(pick).replace('class="av"','class="av" style="margin:auto;width:64px;height:64px;font-size:26px;background:var(--pu)"').replace(/style="background:[^"]*"/,'')}</div><h3 style="font-size:18px;color:var(--ink)">${esc(nm(pick))}</h3><div class="dots">${[0,1,2,3].map(i=>`<i class="${i<pin.length?'f':''}"></i>`).join('')}</div>${keypad()}<p class="mut" style="color:var(--mut)">Demo PIN: 1234</p></div>`;
+  if(view==='dash'){const r=mine().slice(0,4);h=hd('Hello, '+esc(first(me)))+`<div class="pg"><div class="hero"><small>Savings A/c ${mask(me)}</small><div class="bal">${show?`<span style="${bal<0?'text-decoration:underline wavy':''}">${inr(bal)}</span>`:'₹ ••••••'}<button data-a="eye">${show?'Hide':'Show'}</button></div><small>${pending()?inr(pending())+' waiting to sync · ':''}Offline limit left ${inr(S.offlineLimit-pending())}</small><div class="meter"><u style="width:${100-Math.min(100,pending()/S.offlineLimit*100)}%"></u></div></div>
+  <div class="ga"><button data-a="go" data-v="payee"><span>💸</span>Send money</button><button data-a="go" data-v="book"><span>📒</span>Passbook</button><button data-a="go" data-v="book"><span>🕒</span>Offline queue${queue.length?' ('+queue.length+')':''}</button><button data-a="go" data-v="acct"><span>👤</span>Account</button></div>
+  <h3>Recent transactions</h3><div class="card">${r.length?r.map(txRow).join(''):'<div style="color:var(--mut)">No transactions yet. Tap Send money.</div>'}</div></div>`+nav()}
+  if(view==='payee')h=hd('Send money','dash')+`<div class="pg"><h3>Who do you want to pay?</h3>${ids.filter(i=>i!==me).map(i=>`<button class="cu" data-a="payto" data-v="${i}">${av(i)}<div><b>${esc(nm(i))}</b><small>A/c ${mask(i)}</small></div><em>›</em></button>`).join('')}</div>`+nav();
+  if(view==='amount'){const v=amtP();h=hd('Enter amount','payee')+`<div class="pg"><div class="card" style="display:flex;gap:12px;align-items:center">${av(to)}<div><small style="color:var(--mut)">Paying</small><br><b>${esc(nm(to))}</b> <span style="color:var(--mut)">· ${mask(to)}</span></div></div><div class="amt">₹${digits||'0'}</div><div class="q">${[500,1000,3000].map(x=>`<button data-a="add" data-v="${x}">+${x.toLocaleString('en-IN')}</button>`).join('')}</div>${keypad()}<button class="cta" data-a="pay">${online?'Pay ':'Save offline '}${v?inr(v):''}</button><p style="text-align:center;color:var(--mut);font-size:13px">${online?'The bank checks your balance before paying.':'No network: you will get a token and the payment settles on reconnect.'}</p></div>`}
+  if(view==='receipt'){const t=rc.tx,okk=t.status==='SUCCESSFUL';h=hd('Receipt')+`<div class="pg" style="text-align:center"><div class="tick" style="background:${rc.off?'var(--wa)':okk?'var(--ok)':'var(--bad)'}">${rc.off?'🕒':okk?'✓':'✕'}</div><h2 style="margin:4px">${rc.off?'Saved offline':okk?'Payment successful':'Payment failed'}</h2><div style="font-size:32px;font-weight:700">${inr(t.amount)}</div><div class="card" style="text-align:left;margin-top:14px"><div class="kv"><span>To</span><b>${esc(nm(t.to))}</b></div><div class="kv"><span>${rc.off?'Token':'Transaction ID'}</span><b>${t.id}</b></div><div class="kv"><span>Status</span><b>${rc.off?'Pending until you reconnect':t.status.toLowerCase()+(t.reason?' · '+esc(t.reason):'')}</b></div></div><button class="cta" data-a="go" data-v="dash">Back to home</button><button class="cta g" data-a="go" data-v="payee">Pay someone else</button></div>`}
+  if(view==='book'){const q=queue.filter(x=>x.from===me);h=hd('Passbook','dash')+`<div class="pg">${q.length?'<h3>Waiting to sync</h3>'+q.map(x=>`<div class="tk"><span>${inr(x.amount)} to ${esc(nm(x.to))}</span><b>${x.id}</b></div>`).join(''):''}<h3>All transactions</h3><div class="card">${mine().map(txRow).join('')||'<div style="color:var(--mut)">Nothing here yet.</div>'}</div></div>`+nav()}
+  if(view==='acct')h=hd('Account','dash')+`<div class="pg"><div class="card" style="text-align:center">${av(me).replace('class="av"','class="av" style="margin:auto;width:64px;height:64px;font-size:26px"')}<h2 style="margin:8px 0 0">${esc(nm(me))}</h2></div><div class="card"><div class="kv"><span>Account number</span><b>${me}</b></div><div class="kv"><span>Type</span><b>Savings</b></div><div class="kv"><span>Status</span><b>${a?a.status.toLowerCase():''}</b></div><div class="kv"><span>Offline limit</span><b>${inr(S.offlineLimit)}</b></div><div class="kv"><span>This device</span><b>${dev}</b></div></div><button class="cta" data-a="out">Sign out</button><button class="cta g" data-a="reset">Reset demo data</button></div>`+nav();
+  $('app').innerHTML=h}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+  if(a==='cable'){await api('/api/cut','');return tick()}
+  if(a==='pick'){pick=v;pin='';view='pin'}
+  if(a==='go')view=v;if(a==='eye')show=!show;if(a==='payto'){to=v;digits='';view='amount'}
+  if(a==='add')digits=String((parseFloat(digits||'0'))+Number(v));
+  if(a==='k'){if(view==='pin'){if(v==='⌫')pin=pin.slice(0,-1);else if(v!=='.'&&pin.length<4)pin+=v;if(pin.length===4)return login()}
+    else if(v==='⌫')digits=digits.slice(0,-1);else if(v==='.'){if(!digits.includes('.'))digits=(digits||'0')+'.'}else if(digits.length<7&&!/\.\d\d$/.test(digits))digits+=v}
+  if(a==='pay')return pay();if(a==='out'){me=null;view='home'}
+  if(a==='reset'&&confirm('Reset all balances and history?')){try{await api('/api/reset','');me=null;view='home'}catch(x){toast('Cannot reset while offline.')}}
+  draw()});
+addEventListener('offline',tick);addEventListener('online',tick);draw();tick();setInterval(tick,1000);
+</script></body></html>
